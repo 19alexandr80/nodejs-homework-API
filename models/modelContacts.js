@@ -20,6 +20,10 @@ const contactSchama = new Schema(
       match: /^[0-9: -/+]+$/,
       required: true,
     },
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
   },
   { versionKey: false, timestamps: true }
 );
