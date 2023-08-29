@@ -42,11 +42,7 @@ const changeContact = async (req, res) => {
   res.status(200).json(data);
 };
 const updatedFavorite = async (req, res) => {
-  // if (Object.keys(req.body).length === 0) {
-  //   throw HttpError(400, `mising required`);
-  // }
   const id = req.params.contactId;
-  console.log(req.body);
   const data = await Contact.findByIdAndUpdate(id, req.body, { new: true });
   if (!data) {
     throw HttpError(404, "Not found");
