@@ -1,20 +1,20 @@
-const contactsApi = require("../models/contacts");
+const Contact = require("../models/modelContacts");
 const { HttpError, ctrlWrapper } = require("../helpers");
 
 const getAllContacts = async (_, res) => {
-  const data = await contactsApi.listContacts();
+  const data = await Contact.find({}, "-createdAt -updatedAt");
   res.json(data);
 };
 const getContactById = async (req, res) => {
   const id = req.params.contactId;
-  const data = await contactsApi.getContactById(id);
+  const data = await Contact.findById(id);
   if (!data) {
     throw HttpError(404, "Not found");
   }
   res.json(data);
 };
 const addContact = async (req, res) => {
-  const data = await contactsApi.addContact(req.body);
+  const data = await Contact.create(req.body);
   if (!data) {
     throw HttpError(404, "Not found");
   }
@@ -22,7 +22,7 @@ const addContact = async (req, res) => {
 };
 const deleteContactById = async (req, res) => {
   const id = req.params.contactId;
-  const data = await contactsApi.removeContact(id);
+  const data = await Contact.findByIdAndRemove(id);
   if (!data) {
     throw HttpError(404, "Not found");
   }
@@ -35,7 +35,7 @@ const changeContact = async (req, res) => {
     throw HttpError(400, `mising required`);
   }
   const id = req.params.contactId;
-  const data = await contactsApi.updateContact(id, req.body);
+  const data = await Contact.findByIdAndUpdate(id, req.body, { new: true });
   if (!data) {
     throw HttpError(404, "Not found");
   }
