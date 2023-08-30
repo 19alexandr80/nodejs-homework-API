@@ -31,9 +31,6 @@ const deleteContactById = async (req, res) => {
   });
 };
 const changeContact = async (req, res) => {
-  if (Object.keys(req.body).length === 0) {
-    throw HttpError(400, `mising required`);
-  }
   const id = req.params.contactId;
   const data = await Contact.findByIdAndUpdate(id, req.body, { new: true });
   if (!data) {
