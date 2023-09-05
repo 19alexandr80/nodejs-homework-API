@@ -30,5 +30,19 @@ const favoriteSchem = Joi.object({
     "any.required": "missing field favorite",
   }),
 });
+// =======================================================
+const userRegistrSchema = Joi.object({
+  email: Joi.string()
+    .pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, "string")
+    .required()
+    .messages({
+      "any.required": "missing required email field",
+      "string.pattern.name": "email must be a valid email",
+    }),
+  password: Joi.string().min(6).required().messages({
+    "any.required": "missing required password field",
+    "string.min": "at least 6 characters",
+  }),
+});
 
-module.exports = { contactSchema, favoriteSchem };
+module.exports = { contactSchema, favoriteSchem, userRegistrSchema };
