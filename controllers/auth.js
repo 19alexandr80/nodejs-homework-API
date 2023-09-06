@@ -53,7 +53,7 @@ const current = async (req, res) => {
 const logout = async (req, res) => {
   const user = req.user;
   await UserModel.findByIdAndUpdate(user._id, { token: "" });
-  res.status(204).json({ message: "No Content" });
+  res.status(204).json();
 };
 
 module.exports = {
