@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const gravatar = require("gravatar");
 const path = require("path");
 const fs = require("fs/promises");
+const Jimp = require("jimp");
 
 const UserModel = require("../models/modelUsers");
 const { HttpError, ctrlWrapper } = require("../helpers");
@@ -66,10 +67,23 @@ const nweAvatar = async (req, res) => {
   const { path: tmpUpload, originalname } = req.file;
   const fileName = `${req.user._id}_${originalname}`;
   const resultUpload = path.join(avatarDir, fileName);
-  await fs.rename(tmpUpload, resultUpload);
-  const avatarURL = path.join("avatars", fileName);
+  // ==========================================================
+  await Jimp.read(tmpUpload)
+    .then((avatar) => {
+      return avatar
+        .resize(250, 250) // resize
+        .quality(60) // set JPEG quality
+        .write(resultUpload); // save
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  // ===========================================================
+
+  // await fs.rename(tmpUpload, resultUpload);
+  const avatarURL = path.join("/avatars", fileName);
   await UserModel.findByIdAndUpdate(req.user._id, { avatarURL });
-  res.status(201).json({ avatarURL });
+  res.status(200).json({ avatarURL });
 };
 
 module.exports = {
