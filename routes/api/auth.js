@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { validateContact, autenticate } = require("../../middlewares");
+const { validateContact, autenticate, upload } = require("../../middlewares");
 const schemas = require("../../schemas/schemContact");
 
 const ctrl = require("../../controllers/auth");
@@ -17,5 +17,7 @@ router.post("/login", validateContact(schemas.userRegistrSchema), ctrl.login);
 router.get("/current", autenticate, ctrl.current);
 
 router.post("/logout", autenticate, ctrl.logout);
+
+router.post("/avatars", autenticate, upload.single("avatar"), ctrl.nweAvatar);
 
 module.exports = router;

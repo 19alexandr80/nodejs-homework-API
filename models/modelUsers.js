@@ -23,6 +23,10 @@ const userSchama = new Schema(
       type: String,
       default: "",
     },
+    avatarURL: {
+      type: String,
+      required: [true, "Avatar not faund"],
+    },
   },
   { versionKey: false, timestamps: true }
 );
