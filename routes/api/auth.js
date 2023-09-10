@@ -18,6 +18,6 @@ router.get("/current", autenticate, ctrl.current);
 
 router.post("/logout", autenticate, ctrl.logout);
 
-router.post("/avatars", autenticate, upload.single("avatar"), ctrl.nweAvatar);
+router.patch("/avatars", autenticate, upload.single("avatar"), ctrl.nweAvatar);
 
 module.exports = router;

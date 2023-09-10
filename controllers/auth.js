@@ -68,19 +68,17 @@ const nweAvatar = async (req, res) => {
   const fileName = `${req.user._id}_${originalname}`;
   const resultUpload = path.join(avatarDir, fileName);
   // ==========================================================
+
   await Jimp.read(tmpUpload)
-    .then((avatar) => {
-      return avatar
-        .resize(250, 250) // resize
-        .quality(60) // set JPEG quality
-        .write(resultUpload); // save
+    .then(async (avatar) => {
+      return avatar.resize(250, 250).quality(60).writeAsync(tmpUpload);
     })
     .catch((err) => {
       console.error(err);
     });
   // ===========================================================
 
-  // await fs.rename(tmpUpload, resultUpload);
+  await fs.rename(tmpUpload, resultUpload);
   const avatarURL = path.join("/avatars", fileName);
   await UserModel.findByIdAndUpdate(req.user._id, { avatarURL });
   res.status(200).json({ avatarURL });
