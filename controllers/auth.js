@@ -33,7 +33,7 @@ const registerUser = async (req, res) => {
     throw HttpError(404, "Not found");
   }
   const { email: emailUse, subscription } = newUser;
-  const massage = {
+  const message = {
     from: process.env.SMTP_USER,
     to: email,
     subject: process.env.API_URL,
@@ -42,7 +42,7 @@ const registerUser = async (req, res) => {
     html: `<p>To confirm your registration, please clik on link below</p>
     <p><a href="http://localhost:3000/users/verify/${verificationToken}">Clic</a></p>`,
   };
-  await sendActivetionMail(massage);
+  await sendActivetionMail(message);
 
   res.status(201).json({ user: { email: emailUse, subscription } });
 };
@@ -116,7 +116,7 @@ const authVerify = async (req, res, next) => {
     verify: true,
     verificationToken: null,
   });
-  res.status(200).json({ massage: "Verification successful" });
+  res.status(200).json({ message: "Verification successful" });
 };
 
 const verify = async (req, res, next) => {
@@ -129,7 +129,7 @@ const verify = async (req, res, next) => {
     throw HttpError(400, "Verification has already been passed");
   }
   const verificationToken = nanoid();
-  const massage = {
+  const message = {
     from: process.env.SMTP_USER,
     to: email,
     subject: process.env.API_URL,
@@ -143,9 +143,9 @@ const verify = async (req, res, next) => {
     verificationToken,
   });
 
-  await sendActivetionMail(massage);
+  await sendActivetionMail(message);
 
-  res.status(200).json({ massage: "Verification email sent" });
+  res.status(200).json({ message: "Verification email sent" });
 };
 
 module.exports = {
