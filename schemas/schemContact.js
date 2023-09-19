@@ -45,4 +45,19 @@ const userRegistrSchema = Joi.object({
   }),
 });
 
-module.exports = { contactSchema, favoriteSchem, userRegistrSchema };
+const userEmailSchema = Joi.object({
+  email: Joi.string()
+    .pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, "string")
+    .required()
+    .messages({
+      "any.required": "missing required field email",
+      "string.pattern.name": "email must be a valid email",
+    }),
+});
+
+module.exports = {
+  contactSchema,
+  favoriteSchem,
+  userRegistrSchema,
+  userEmailSchema,
+};
