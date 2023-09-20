@@ -128,20 +128,15 @@ const verify = async (req, res, next) => {
   if (user.verify) {
     throw HttpError(400, "Verification has already been passed");
   }
-  const verificationToken = nanoid();
   const message = {
     from: process.env.SMTP_USER,
     to: email,
     subject: process.env.API_URL,
     text: `To confirm your registration, please clik on link below\n
-    http://localhost:3000/users/verify/${verificationToken}`,
+    http://localhost:3000/users/verify/${user.verificationToken}`,
     html: `<p>To confirm your registration, please clik on link below</p>
-    <p><a href="http://localhost:3000/users/verify/${verificationToken}">Clic</a></p>`,
+    <p><a href="http://localhost:3000/users/verify/${user.verificationToken}">Clic</a></p>`,
   };
-
-  await UserModel.findByIdAndUpdate(user._id, {
-    verificationToken,
-  });
 
   await sendActivetionMail(message);
 
