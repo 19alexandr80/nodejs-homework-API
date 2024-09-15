@@ -11,24 +11,26 @@ const addFeedback = async (req, res) => {
   res.status(201).json(data);
 };
 const getAllFeedback = async (req, res) => {
-  const { page = 1, limit = 10 } = req.query;
-  const skip = (page - 1) * limit;
-  const { _id: owner } = req.user;
-  const data = await Feedback.find({ owner }, "-createdAt -updatedAt -owner", {
-    skip,
-    limit,
-  });
+  // const { page = 1, limit = 10 } = req.query;
+  // const skip = (page - 1) * limit;
+  // const { _id: owner } = req.user;
+  // const data = await Feedback.find({ owner }, "-createdAt -updatedAt -owner", {
+  //   skip,
+  //   limit,
+  // });
+  const data = await Feedback.find();
   res.json(data);
 };
-const getFeedbackById = async (req, res) => {
-  const id = req.params.contactId;
-  const data = await Feedback.findById(id);
-  if (!data) {
-    throw HttpError(404, "Not found");
-  }
-  res.json(data);
-};
+// const getFeedbackById = async (req, res) => {
+//   const id = req.params.contactId;
+//   const data = await Feedback.findById(id);
+//   if (!data) {
+//     throw HttpError(404, "Not found");
+//   }
+//   res.json(data);
+// };
 const deleteFeedbackById = async (req, res) => {
+  console.log(req.params);
   const id = req.params.contactId;
   const data = await Feedback.findByIdAndRemove(id);
   if (!data) {
@@ -41,7 +43,7 @@ const deleteFeedbackById = async (req, res) => {
 
 module.exports = {
   getAllFeedback: ctrlWrapper(getAllFeedback),
-  getFeedbackById: ctrlWrapper(getFeedbackById),
+  // getFeedbackById: ctrlWrapper(getFeedbackById),
   addFeedback: ctrlWrapper(addFeedback),
   deleteFeedbackById: ctrlWrapper(deleteFeedbackById),
 };
